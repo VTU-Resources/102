@@ -2,172 +2,979 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trial Period Expired</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>The Little Screens</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            DEFAULT: '#CBA579',
+                            light: '#F5E6D3',
+                            dark: '#8B7355',
+                            dim: 'rgba(203,165,121,0.1)'
+                        },
+                        obsidian: '#050505',
+                        charcoal: '#1A1A1A',
+                        marble: '#FAFAFA'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Manrope"', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', filter: 'blur(10px)' },
+                            '100%': { opacity: '1', filter: 'blur(0)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    },
+                    padding: {
+                        'safe-bottom': 'env(safe-area-inset-bottom)',
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* Premium Pro Typography */
+        /* CSS Variables for Theming */
+        :root {
+            --bg-primary: #050505;
+            --bg-secondary: #111111;
+            --bg-glass: rgba(18, 18, 18, 0.85);
+            --text-primary: #FFFFFF;
+            --text-secondary: #9CA3AF;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-glow: rgba(203, 165, 121, 0.2);
+            --card-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B7280;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --accent-glow: rgba(203, 165, 121, 0.15);
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            color: #1a202c;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(to right, #F5E6D3, #CBA579);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        h1, h2, h3, .brand-font {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        /* Modern Abstract Background */
-        .pro-bg {
-            background-color: #F0F4F8;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 20%);
-        }
-
-        /* Glass/Card Effect - Refined for sharper look */
-        .pro-card {
-            background: rgba(255, 255, 255, 1);
-            box-shadow: 
-                0 10px 30px -5px rgba(0, 0, 0, 0.08), 
-                0 4px 12px -4px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(226, 232, 240, 1);
-        }
-
-        /* Gradient Text for Impact */
-        .text-gradient {
-            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+        [data-theme="light"] .gold-gradient-text {
+            background: linear-gradient(to right, #CBA579, #8B7355);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Premium Button Styling - More Compact */
-        .pro-btn {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        .pro-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(255,255,255,0.2), transparent);
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .pro-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px -5px rgba(37, 99, 235, 0.3);
+        .pro-button-primary {
+            background: linear-gradient(90deg, #E5C39C, #F5E6D3, #CBA579);
+            color: #0A0A0A;
         }
         
-        .pro-btn:hover::after {
-            opacity: 1;
+        .pro-button-secondary {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
         }
-
-        .pro-btn:active {
-            transform: translateY(0);
+        [data-theme="light"] .pro-button-secondary {
+            color: #4B5563;
         }
-
-        /* Status Badge */
-        .status-badge {
-            background: #FEF2F2;
-            color: #B91C1C;
-            border: 1px solid #xFECACA;
+        
+        /* Mobile Specific Tweaks */
+        .safe-pb {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+        
+        /* Form Inputs */
+        .pro-input {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .pro-input:focus {
+            border-color: #CBA579;
+            box-shadow: 0 0 0 2px rgba(203, 165, 121, 0.1);
         }
     </style>
 </head>
-<body class="pro-bg min-h-screen flex items-center justify-center p-4">
+<body class="antialiased selection:bg-gold selection:text-black overflow-x-hidden">
 
-    <!-- Main Container - Reduced Padding for compactness -->
-    <main class="pro-card w-full max-w-[460px] rounded-2xl p-6 sm:p-8 relative overflow-hidden animate-fade-in">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-obsidian transition-opacity duration-700">
+        <i data-lucide="gem" class="text-gold w-12 h-12 mb-6 animate-pulse"></i>
+        <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-500 animate-pulse">The Little Screens</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-md mx-auto min-h-screen relative shadow-2xl transition-colors duration-500 border-x border-[var(--border-color)]">
         
-        <!-- Decorative Top Border -->
-        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-900 to-blue-600"></div>
-
-        <!-- Brand Name - Smaller & Sharper -->
-        <div class="text-center mb-6">
-            <h3 class="text-xs font-bold tracking-widest text-gray-400 uppercase brand-font">
-                Shridhar Group of Company
-            </h3>
-        </div>
-
-        <!-- Status Indicator - Compact -->
-        <div class="flex justify-center mb-5">
-            <div class="status-badge px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase flex items-center gap-2 shadow-sm">
-                <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
-                Trial Expired
+        <!-- Header / Theme Toggle -->
+        <div class="fixed top-0 left-0 right-0 max-w-md mx-auto z-40 p-6 flex justify-between items-start pointer-events-none">
+            <div class="pointer-events-auto">
+                <!-- Dynamic Back Button (Only visible on sub-pages) -->
+                <button id="header-back-btn" class="hidden w-10 h-10 rounded-full glass-panel flex items-center justify-center text-[var(--text-primary)] hover:scale-105 transition-transform active:scale-95" onclick="navigateTo('home')">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
             </div>
-        </div>
-
-        <!-- Main Heading - Reduced Size -->
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 text-center mb-4 leading-tight">
-            Client App Viewing<br>
-            <span class="text-gradient">Trial Period Expired</span>
-        </h1>
-
-        <!-- Sub Heading - Reduced Size & Tighter Leading -->
-        <p class="text-gray-600 text-center text-sm sm:text-base leading-relaxed mb-6 font-medium px-2">
-            Book your full application now and get it published on Play Store. Take your business to the next level with the <span class="text-gray-900 font-bold">Number 1 Software Company</span> All Over India.
-        </p>
-
-        <!-- Highlight Box - Compact -->
-        <div class="bg-blue-50 border-l-[3px] border-blue-700 p-4 rounded-r-lg mb-8 transform transition-transform hover:scale-[1.01] duration-300">
-            <p class="text-blue-900 font-bold text-sm sm:text-base leading-snug">
-                We Build Powerful, Professional & High-Quality Web & Mobile Applications.
-            </p>
-        </div>
-
-        <!-- CTA Button - Adjusted for better mobile fit -->
-        <a id="whatsapp-link" href="#" target="_blank" class="pro-btn text-white font-bold text-base py-3.5 px-6 w-full rounded-lg flex items-center justify-center gap-2.5 no-underline shadow-md group">
-            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-            <span>Launch My App</span>
-        </a>
-
-        <!-- Trust Element - Subtle -->
-        <div class="mt-6 pt-4 border-t border-gray-100 flex justify-center">
-            <div class="flex items-center gap-1.5 text-gray-400 text-[10px] font-medium uppercase tracking-widest">
-                <svg class="w-3.5 h-3.5 text-green-500 fill-current" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-                Secure & Trusted Partner
-            </div>
-        </div>
-
-    </main>
-
-    <script>
-        // Data for WhatsApp
-        const phoneNumber = "917483640694";
-        const message = "Hi, I'm highly interested in building my Brand Web/App. I have seen the demo of my brand app and I really liked it. Please guide me with the next steps, pricing and publishing process.";
-
-        // Construct the URL
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-        // Set the href for the button
-        document.getElementById('whatsapp-link').href = whatsappUrl;
-
-        // Entrance Animation
-        document.addEventListener('DOMContentLoaded', () => {
-            const card = document.querySelector('.pro-card');
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(15px) scale(0.98)';
-            card.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
             
-            // Staggered delay for content inside
+            <button id="theme-toggle" class="pointer-events-auto w-10 h-10 rounded-full glass-panel flex items-center justify-center text-[var(--text-primary)] hover:rotate-180 transition-transform duration-700 active:scale-95">
+                <i data-lucide="sun" class="w-5 h-5 hidden" id="icon-sun"></i>
+                <i data-lucide="moon" class="w-5 h-5" id="icon-moon"></i>
+            </button>
+        </div>
+
+        <!-- Scrollable Content Area -->
+        <main id="app-content" class="pb-40 min-h-screen transition-all duration-500">
+            <!-- Content Injected via JS -->
+        </main>
+
+        <!-- Floating Action Button (WhatsApp) -->
+        <div id="fab-whatsapp" class="fixed bottom-28 right-6 z-40 transition-transform duration-300 hover:scale-110 active:scale-95 hidden">
+            <a href="https://wa.me/919916519128?text=Hi%2C%20I%20have%20a%20query%20about%20The%20Little%20Screens%20experiences." target="_blank" class="block bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-green-500/30 border border-white/10 relative group">
+                <div class="absolute inset-0 bg-white rounded-full animate-ping opacity-20"></div>
+                <i data-lucide="message-circle" class="w-6 h-6 relative z-10 fill-white"></i>
+            </a>
+        </div>
+
+        <!-- Floating Navigation Dock -->
+        <div class="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none safe-pb pb-4">
+            <nav class="pointer-events-auto glass-panel rounded-full px-6 py-4 flex items-center gap-6 sm:gap-8 shadow-2xl scale-[0.85] sm:scale-100 transition-all origin-bottom">
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('home')" data-tab="home">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="home" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+                
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('experiences')" data-tab="experiences">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="sparkles" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('booking')" data-tab="booking">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="calendar" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('referral')" data-tab="referral">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="gift" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('vip')" data-tab="vip">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="user" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+            </nav>
+        </div>
+
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // --- DATA ---
+        const WA_NUMBER = "919916519128";
+        
+        // --- UPDATED PACKAGE DATA WITH LOCAL IMAGES ---
+        const PACKAGES = [
+            {
+                id: 1,
+                title: "Couple Premium",
+                price: "₹1,799",
+                duration: "3 Hours",
+                image: "1.png",
+                description: "An intimate private screening experience designed for two, including beautiful decorations to set the mood.",
+                features: ["2 People", "Decorations Included", "Private Screening", "Max 2 Guests"]
+            },
+            {
+                id: 2,
+                title: "Couple Luxury",
+                price: "₹1,999",
+                duration: "3 Hours",
+                image: "2.png",
+                description: "Elevate your date night with our Luxury Couple package. Includes premium decorations and a VIP cinematic feel.",
+                features: ["2 People", "Premium Decor", "VIP Experience", "Max 2 Guests"]
+            },
+            {
+                id: 3,
+                title: "Group Premium",
+                price: "₹1,899",
+                duration: "3 Hours",
+                image: "3.png",
+                description: "Perfect for friends and family. Covers up to 4 people with decorations. Additional guests at ₹200/person.",
+                features: ["Up to 4 People", "Decorations Included", "Max 10 Guests", "₹200/Extra Person"]
+            },
+            {
+                id: 4,
+                title: "Group Luxury",
+                price: "₹1,999",
+                duration: "3 Hours",
+                image: "4.png",
+                description: "The ultimate group celebration package. Luxury setting for up to 4 people, expandable for larger gatherings.",
+                features: ["Up to 4 People", "Luxury Decor", "Max 6 Guests", "₹200/Extra Person"]
+            }
+        ];
+
+        const ADDONS = [
+            { id: 'cake', name: 'Truffle Cake (500g)', price: 800 },
+            { id: 'fog', name: 'Fog Entry Effect', price: 500 },
+            { id: 'dec', name: 'Floral Decoration', price: 1200 },
+            { id: 'photo', name: 'Pro Photographer', price: 1500 },
+        ];
+
+        // --- STATE ---
+        let state = {
+            currentTab: 'home',
+            theme: 'dark', // 'dark' or 'light'
+            user: null, // Logged in user data
+            booking: {
+                package: null,
+                step: 1,
+                date: '',
+                time: '',
+                guests: 2,
+                addons: []
+            },
+            authMode: 'login' // 'login' or 'signup'
+        };
+
+        // --- INIT ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // Theme Init
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+
+            // User Init (Local Storage)
+            const savedUser = localStorage.getItem('tls_user');
+            if(savedUser) {
+                state.user = JSON.parse(savedUser);
+            }
+
+            // Fake Loading
             setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0) scale(1)';
-            }, 100);
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    navigateTo('home');
+                }, 700);
+            }, 2000);
+
+            // Event Listeners
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
         });
+
+        // --- THEME LOGIC ---
+        function toggleTheme() {
+            const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        }
+
+        function setTheme(mode) {
+            state.theme = mode;
+            document.documentElement.setAttribute('data-theme', mode);
+            localStorage.setItem('theme', mode);
+
+            const sunIcon = document.getElementById('icon-sun');
+            const moonIcon = document.getElementById('icon-moon');
+            const loadingScreen = document.getElementById('loading-screen');
+
+            if (mode === 'light') {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                if(loadingScreen) loadingScreen.style.backgroundColor = '#FAFAFA'; // Marble
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                if(loadingScreen) loadingScreen.style.backgroundColor = '#050505'; // Obsidian
+            }
+        }
+
+        // --- NAVIGATION ---
+        function navigateTo(screenId, pkg = null) {
+            state.currentTab = screenId;
+            
+            // Handle Package Selection
+            if (pkg) {
+                state.booking.package = pkg;
+                state.booking.step = 1;
+                state.booking.date = '';
+                state.booking.time = '';
+                state.booking.guests = 2;
+                state.booking.addons = [];
+            } else if (screenId === 'booking' && !state.booking.package) {
+                state.booking.package = PACKAGES[0];
+            }
+
+            // Update UI
+            updateDock();
+            renderContent(screenId);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+
+            // Update Header Back Button
+            const backBtn = document.getElementById('header-back-btn');
+            if (screenId === 'home') {
+                backBtn.classList.add('hidden');
+            } else {
+                backBtn.classList.remove('hidden');
+            }
+
+            // Update FAB Visibility
+            const fab = document.getElementById('fab-whatsapp');
+            if (screenId === 'booking' || screenId === 'vip') {
+                fab.classList.add('hidden');
+            } else {
+                fab.classList.remove('hidden');
+            }
+
+            // Re-init Icons
+            lucide.createIcons();
+        }
+
+        function updateDock() {
+            document.querySelectorAll('.nav-item').forEach(el => {
+                const isTarget = el.dataset.tab === state.currentTab;
+                const icon = el.querySelector('i') || el.querySelector('svg');
+                const glow = el.querySelector('.active-glow');
+                const dot = el.querySelector('.active-dot');
+
+                if (icon) {
+                    if (isTarget) {
+                        icon.classList.add('text-gold', '-translate-y-2', 'scale-110');
+                        icon.classList.remove('text-gray-400');
+                        if(glow) glow.classList.remove('opacity-0');
+                        if(dot) dot.classList.remove('opacity-0');
+                    } else {
+                        icon.classList.remove('text-gold', '-translate-y-2', 'scale-110');
+                        icon.classList.add('text-gray-400');
+                        if(glow) glow.classList.add('opacity-0');
+                        if(dot) dot.classList.add('opacity-0');
+                    }
+                }
+            });
+        }
+
+        // --- RENDERERS ---
+
+        function renderContent(screenId) {
+            const container = document.getElementById('app-content');
+            let html = '';
+
+            switch(screenId) {
+                case 'home': html = getHomeHTML(); break;
+                case 'experiences': html = getExperiencesHTML(); break;
+                case 'booking': html = getBookingHTML(); break;
+                case 'referral': html = getReferralHTML(); break;
+                case 'vip': 
+                    // Auth Check
+                    if(state.user) {
+                        html = getProfileHTML(); 
+                    } else {
+                        html = getAuthHTML();
+                    }
+                    break;
+            }
+
+            // Smooth transition
+            container.style.opacity = '0';
+            setTimeout(() => {
+                container.innerHTML = html;
+                container.style.opacity = '1';
+                lucide.createIcons();
+                
+                // Re-bind listeners after rendering HTML
+                if (screenId === 'booking') bindBookingListeners();
+                if (screenId === 'vip' && state.user) bindProfileListeners();
+            }, 200);
+        }
+
+        // --- HTML GENERATORS ---
+
+        function getHomeHTML() {
+            return `
+                <div class="animate-slide-up space-y-10">
+                    <!-- Hero with 5.png -->
+                    <div class="relative h-[460px] w-full rounded-b-[48px] overflow-hidden">
+                        <img src="5.png" onerror="this.src='https://images.unsplash.com/photo-1513106580091-1d82408b8cd8?q=80&w=1200&auto=format&fit=crop'" class="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/60 to-transparent"></div>
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+                        
+                        <div class="absolute bottom-0 left-0 w-full p-8 space-y-6">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border-[var(--border-color)]">
+                                <i data-lucide="gem" class="w-3 h-3 text-gold"></i>
+                                <span class="text-gold text-[10px] font-bold tracking-[0.2em] uppercase">The Little Screens Pro</span>
+                            </div>
+                            
+                            <h1 class="text-5xl font-serif leading-[1.1] text-[var(--text-primary)]">
+                                Experience <br /> 
+                                <span class="gold-gradient-text">Cinema</span>
+                            </h1>
+                            
+                            <div class="flex gap-4 pt-2">
+                                <button onclick="navigateTo('experiences')" class="pro-button-primary px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transform transition hover:-translate-y-1 active:scale-95">
+                                    Reserve Now
+                                </button>
+                                <button onclick="navigateTo('vip')" class="w-12 h-12 rounded-xl glass-panel flex items-center justify-center text-[var(--text-primary)] hover:bg-white/10 transition-colors active:scale-95">
+                                    <i data-lucide="user" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="px-6 flex gap-4">
+                        <div onclick="navigateTo('booking')" class="flex-1 glass-panel p-6 flex flex-col items-center gap-3 cursor-pointer group rounded-3xl transition hover:border-gold/30 active:scale-95 duration-200">
+                            <div class="p-3 rounded-full bg-gradient-to-br from-[var(--bg-secondary)] to-black border border-[var(--border-color)] group-hover:border-gold/50 transition">
+                                <i data-lucide="calendar" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <span class="text-[var(--text-secondary)] text-xs font-bold uppercase tracking-wider group-hover:text-[var(--text-primary)]">Book Now</span>
+                        </div>
+                        <div onclick="navigateTo('referral')" class="flex-1 glass-panel p-6 flex flex-col items-center gap-3 cursor-pointer group rounded-3xl transition hover:border-gold/30 active:scale-95 duration-200">
+                            <div class="p-3 rounded-full bg-gradient-to-br from-[var(--bg-secondary)] to-black border border-[var(--border-color)] group-hover:border-gold/50 transition">
+                                <i data-lucide="gift" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <span class="text-[var(--text-secondary)] text-xs font-bold uppercase tracking-wider group-hover:text-[var(--text-primary)]">Gifts</span>
+                        </div>
+                    </div>
+
+                    <!-- Carousel -->
+                    <div class="pb-8">
+                        <div class="flex justify-between items-end px-6 mb-6">
+                            <h2 class="text-2xl font-serif text-[var(--text-primary)]">Signature Packages</h2>
+                            <button onclick="navigateTo('experiences')" class="text-gold text-xs font-bold tracking-widest uppercase">View All</button>
+                        </div>
+                        
+                        <div class="flex overflow-x-auto gap-6 px-6 pb-4 snap-x hide-scrollbar">
+                            ${PACKAGES.map(pkg => `
+                                <div class="min-w-[300px] snap-center">
+                                    <div class="relative h-[380px] rounded-[32px] overflow-hidden group cursor-pointer border border-[var(--border-color)] active:scale-[0.98] transition-transform duration-300" onclick="selectPackageAndBook(${pkg.id})">
+                                        <img src="${pkg.image}" onerror="this.src='https://via.placeholder.com/300x380'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-[var(--bg-primary)]"></div>
+                                        
+                                        <div class="absolute top-4 right-4 glass-panel px-4 py-2 rounded-full">
+                                            <span class="text-gold text-xs font-bold tracking-wide">${pkg.price}</span>
+                                        </div>
+
+                                        <div class="absolute bottom-0 w-full p-8">
+                                            <h3 class="text-2xl font-serif text-[var(--text-primary)] mb-2 group-hover:text-gold transition-colors">${pkg.title}</h3>
+                                            <div class="flex items-center gap-3 mb-4">
+                                                <span class="text-[var(--text-secondary)] text-xs uppercase tracking-wider">${pkg.duration}</span>
+                                                <span class="w-1 h-1 rounded-full bg-gold"></span>
+                                                <span class="text-[var(--text-secondary)] text-xs uppercase tracking-wider">${pkg.features[0]}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getExperiencesHTML() {
+            return `
+                <div class="animate-fade-in pt-24 px-6 space-y-8">
+                    <div class="space-y-2">
+                        <h2 class="text-3xl font-serif text-[var(--text-primary)]">The Collection</h2>
+                        <p class="text-[var(--text-secondary)] text-sm">Curated experiences for your special moments.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        ${PACKAGES.map(pkg => `
+                            <div class="group relative bg-[var(--bg-secondary)] rounded-[32px] overflow-hidden border border-[var(--border-color)] shadow-lg">
+                                <div class="h-56 relative overflow-hidden">
+                                    <img src="${pkg.image}" onerror="this.src='https://via.placeholder.com/800x400'" class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-secondary)] to-transparent"></div>
+                                    <div class="absolute top-4 right-4 glass-panel px-3 py-1 rounded-full">
+                                        <span class="text-gold font-bold text-xs">${pkg.price}</span>
+                                    </div>
+                                </div>
+                                <div class="p-8 -mt-12 relative z-10">
+                                    <h3 class="text-2xl font-serif text-[var(--text-primary)] mb-2">${pkg.title}</h3>
+                                    <p class="text-[var(--text-secondary)] text-sm mb-6 leading-relaxed">${pkg.description}</p>
+                                    <button onclick="selectPackageAndBook(${pkg.id})" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider active:scale-95 transition-transform">
+                                        Reserve Now
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- AUTH & PROFILE HTML ---
+
+        function getAuthHTML() {
+            const isLogin = state.authMode === 'login';
+            return `
+                <div class="animate-fade-in pt-32 px-6 flex flex-col items-center justify-center min-h-[70vh]">
+                    <div class="w-full max-w-sm">
+                        <div class="text-center mb-10">
+                             <div class="w-20 h-20 mx-auto bg-gradient-to-br from-gold to-yellow-800 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(203,165,121,0.2)]">
+                                <i data-lucide="lock" class="w-8 h-8 text-black"></i>
+                            </div>
+                            <h2 class="text-3xl font-serif text-[var(--text-primary)] mb-2">${isLogin ? 'Welcome Back' : 'Join The Club'}</h2>
+                            <p class="text-[var(--text-secondary)] text-sm">Access your VIP profile and bookings.</p>
+                        </div>
+
+                        <form onsubmit="handleAuth(event)" class="space-y-4">
+                            ${!isLogin ? `
+                                <div class="space-y-2">
+                                    <label class="text-[var(--text-secondary)] text-xs uppercase tracking-widest font-bold ml-1">Full Name</label>
+                                    <input type="text" id="auth-name" class="pro-input" placeholder="Enter your name" required>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="space-y-2">
+                                <label class="text-[var(--text-secondary)] text-xs uppercase tracking-widest font-bold ml-1">Phone Number</label>
+                                <input type="tel" id="auth-phone" class="pro-input" placeholder="Enter phone number" required>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-[var(--text-secondary)] text-xs uppercase tracking-widest font-bold ml-1">Password</label>
+                                <input type="password" id="auth-pass" class="pro-input" placeholder="••••••••" required>
+                            </div>
+
+                            <button type="submit" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-gold/20 mt-6 active:scale-95 transition-transform">
+                                ${isLogin ? 'Sign In' : 'Create Account'}
+                            </button>
+                        </form>
+
+                        <div class="mt-8 text-center">
+                            <button onclick="toggleAuthMode()" class="text-[var(--text-secondary)] text-sm hover:text-gold transition-colors">
+                                ${isLogin ? "Don't have an account? Sign Up" : "Already a member? Sign In"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getProfileHTML() {
+            const user = state.user;
+            const defaultAvatar = "6.png";
+            
+            return `
+                <div class="animate-fade-in">
+                    <div class="relative h-[360px] w-full overflow-hidden rounded-b-[48px]">
+                        <img src="https://images.unsplash.com/photo-1551516594-56cb78394645?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-[var(--bg-primary)]/60 z-10"></div>
+                        
+                        <div class="absolute bottom-0 w-full p-8 z-20 flex flex-col items-center">
+                            <!-- Profile Photo Upload -->
+                            <div class="relative w-28 h-28 mb-4 group cursor-pointer" onclick="document.getElementById('avatar-upload').click()">
+                                <div class="absolute inset-0 bg-gold rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                                <div class="relative w-full h-full rounded-full p-[3px] bg-gradient-to-b from-gold to-transparent">
+                                    <div class="w-full h-full rounded-full border-4 border-[var(--bg-primary)] overflow-hidden bg-black">
+                                        <img id="profile-img" src="${user.avatar || defaultAvatar}" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-0 right-0 w-8 h-8 bg-gold rounded-full flex items-center justify-center text-black border-2 border-[var(--bg-primary)]">
+                                    <i data-lucide="camera" class="w-4 h-4"></i>
+                                </div>
+                                <input type="file" id="avatar-upload" class="hidden" accept="image/*" onchange="handleAvatarUpload(this)">
+                            </div>
+                            
+                            <h2 class="text-2xl font-serif text-white text-center">${user.name}</h2>
+                            <span class="text-gold text-[10px] font-bold tracking-[0.2em] uppercase mt-2">Platinum Member</span>
+                        </div>
+                    </div>
+
+                    <div class="px-6 mt-8 space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                           <div class="glass-panel p-6 rounded-3xl text-center">
+                              <div class="text-2xl font-serif text-[var(--text-primary)]">0</div>
+                              <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">Credits</div>
+                           </div>
+                           <div class="glass-panel p-6 rounded-3xl text-center">
+                              <div class="text-2xl font-serif text-[var(--text-primary)]">0</div>
+                              <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">Visits</div>
+                           </div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-3xl space-y-6">
+                            <h3 class="text-[var(--text-primary)] font-serif">Member Privileges</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-primary)] text-sm">Priority Booking</span>
+                                    <i data-lucide="check" class="w-4 h-4 text-gold"></i>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-primary)] text-sm">Valet Parking</span>
+                                    <i data-lucide="check" class="w-4 h-4 text-gold"></i>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-secondary)] text-sm">Complimentary Cake</span>
+                                    <div class="w-4 h-4 rounded-full border border-[var(--text-secondary)]"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="logout()" class="w-full py-4 rounded-xl border border-red-500/30 text-red-500 text-xs font-bold uppercase tracking-wider hover:bg-red-500/10 transition-colors">
+                            Log Out
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- AUTH LOGIC ---
+
+        function toggleAuthMode() {
+            state.authMode = state.authMode === 'login' ? 'signup' : 'login';
+            renderContent('vip');
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const phone = document.getElementById('auth-phone').value;
+            const pass = document.getElementById('auth-pass').value;
+
+            if (state.authMode === 'signup') {
+                const name = document.getElementById('auth-name').value;
+                if(!name || !phone || !pass) return;
+
+                // Create User
+                const newUser = {
+                    name: name,
+                    phone: phone,
+                    password: pass, // In a real app, hash this!
+                    avatar: null
+                };
+                
+                // Save to DB (Local Storage)
+                localStorage.setItem('tls_user_db_' + phone, JSON.stringify(newUser));
+                
+                // Auto Login
+                loginUser(newUser);
+            } else {
+                // Login
+                const storedUserStr = localStorage.getItem('tls_user_db_' + phone);
+                if (storedUserStr) {
+                    const storedUser = JSON.parse(storedUserStr);
+                    if (storedUser.password === pass) {
+                        loginUser(storedUser);
+                    } else {
+                        alert('Invalid password');
+                    }
+                } else {
+                    alert('User not found. Please sign up.');
+                }
+            }
+        }
+
+        function loginUser(user) {
+            state.user = user;
+            // Persist Session
+            localStorage.setItem('tls_user', JSON.stringify(user));
+            renderContent('vip');
+        }
+
+        function logout() {
+            state.user = null;
+            localStorage.removeItem('tls_user');
+            state.authMode = 'login';
+            renderContent('vip');
+        }
+
+        function handleAvatarUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Img = e.target.result;
+                    
+                    // Update State
+                    state.user.avatar = base64Img;
+                    
+                    // Update UI
+                    document.getElementById('profile-img').src = base64Img;
+                    
+                    // Save Persistence
+                    localStorage.setItem('tls_user', JSON.stringify(state.user));
+                    // Update "DB" record too
+                    localStorage.setItem('tls_user_db_' + state.user.phone, JSON.stringify(state.user));
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function bindProfileListeners() {
+            lucide.createIcons();
+        }
+
+        // --- EXISTING BOOKING LOGIC (Unchanged) ---
+
+        function getBookingHTML() {
+            const pkg = state.booking.package;
+            if(!pkg) return '';
+
+            // Step 1: Date/Time
+            if (state.booking.step === 1) {
+                const daysHTML = Array.from({length: 7}, (_, i) => {
+                    const d = new Date();
+                    d.setDate(d.getDate() + i);
+                    const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
+                    const dayNum = d.getDate();
+                    const fullDate = `${dayNum} ${dayName}`;
+                    const isSelected = state.booking.date === fullDate;
+                    
+                    return `
+                        <button onclick="setBookingDate('${fullDate}')" 
+                            class="min-w-[72px] h-[96px] rounded-[20px] flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${isSelected ? 'bg-gold border-gold text-black shadow-lg scale-105' : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)]'}">
+                            <span class="text-[10px] font-bold uppercase tracking-wider opacity-60">${dayName}</span>
+                            <span class="text-2xl font-serif font-medium">${dayNum}</span>
+                        </button>
+                    `;
+                }).join('');
+
+                const times = ['11:00 AM', '02:30 PM', '06:00 PM', '09:30 PM'];
+                const timesHTML = times.map(t => {
+                    const isSelected = state.booking.time === t;
+                    return `
+                        <button onclick="setBookingTime('${t}')" 
+                            class="py-4 rounded-xl text-xs font-bold tracking-wider border transition-all active:scale-95 ${isSelected ? 'bg-[var(--bg-secondary)] border-gold text-gold' : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)]'}">
+                            ${t}
+                        </button>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="animate-fade-in pt-24 px-6 space-y-8">
+                        <div class="space-y-4">
+                            <h3 class="text-[var(--text-primary)] font-serif text-xl">Confirm Experience</h3>
+                            <div class="p-4 rounded-2xl bg-[var(--bg-secondary)] border border-gold/50 shadow-[0_0_20px_var(--accent-glow)] flex gap-4 items-center">
+                                <img src="${pkg.image}" onerror="this.src='https://via.placeholder.com/100'" class="w-16 h-16 rounded-xl object-cover">
+                                <div>
+                                    <h4 class="text-[var(--text-primary)] font-serif">${pkg.title}</h4>
+                                    <p class="text-gold text-xs font-bold mt-1">${pkg.price}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h3 class="text-[var(--text-primary)] font-serif text-xl">Select Date</h3>
+                            <div class="flex gap-3 overflow-x-auto pb-4 hide-scrollbar">
+                                ${daysHTML}
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                             <h3 class="text-[var(--text-primary)] font-serif text-xl">Select Slot</h3>
+                             <div class="grid grid-cols-2 gap-3">
+                                ${timesHTML}
+                             </div>
+                        </div>
+
+                         <div class="space-y-4">
+                             <h3 class="text-[var(--text-primary)] font-serif text-xl">Guests</h3>
+                             <div class="flex justify-between items-center p-4 bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)]">
+                                <span class="text-[var(--text-secondary)]">Number of People</span>
+                                <div class="flex items-center gap-4">
+                                    <button onclick="updateGuests(-1)" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-primary)] active:bg-white/10">-</button>
+                                    <span class="text-[var(--text-primary)] font-bold w-4 text-center">${state.booking.guests}</span>
+                                    <button onclick="updateGuests(1)" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-primary)] active:bg-white/10">+</button>
+                                </div>
+                             </div>
+                             <p class="text-[10px] text-[var(--text-secondary)] text-right px-1">
+                                ${pkg.title.includes('Group') ? '₹200 per additional person over 4' : 'Standard occupancy applied'}
+                             </p>
+                        </div>
+
+                        <button onclick="nextBookingStep()" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider active:scale-95 transition-transform ${(!state.booking.date || !state.booking.time) ? 'opacity-50 pointer-events-none' : ''}">
+                            Proceed to Customization
+                        </button>
+                    </div>
+                `;
+            } 
+            else {
+                const total = calculateTotal();
+                const addonsHTML = ADDONS.map(addon => {
+                    const isSelected = state.booking.addons.includes(addon.id);
+                    return `
+                        <div onclick="toggleAddon('${addon.id}')" class="p-4 rounded-2xl border flex items-center justify-between cursor-pointer transition-all active:scale-[0.98] ${isSelected ? 'bg-[var(--bg-secondary)] border-gold/50' : 'bg-[var(--bg-secondary)] border-[var(--border-color)]'}">
+                            <div class="flex items-center gap-4">
+                                <div class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${isSelected ? 'bg-gold border-gold' : 'border-gray-500'}">
+                                    ${isSelected ? '<i data-lucide="check" class="w-3 h-3 text-black"></i>' : ''}
+                                </div>
+                                <span class="text-[var(--text-primary)] text-sm font-medium">${addon.name}</span>
+                            </div>
+                            <span class="text-gold text-xs font-bold">₹${addon.price}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="animate-slide-up pt-24 px-6 space-y-8">
+                         <div class="space-y-4">
+                            <h3 class="text-[var(--text-primary)] font-serif text-xl">Curated Additions</h3>
+                            <div class="grid gap-3">
+                                ${addonsHTML}
+                            </div>
+                        </div>
+
+                        <div class="p-6 rounded-3xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-4">
+                            <div class="flex justify-between items-center pb-4 border-b border-[var(--border-color)]">
+                                <span class="text-[var(--text-secondary)] text-sm">Estimated Total</span>
+                                <span class="text-2xl font-serif text-gold">₹${total}</span>
+                            </div>
+                            <button onclick="confirmBooking()" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                                <i data-lucide="message-circle" class="w-4 h-4 text-black"></i>
+                                Confirm Request
+                            </button>
+                        </div>
+
+                        <button onclick="setBookingStep(1)" class="w-full text-center text-[var(--text-secondary)] text-xs uppercase tracking-widest hover:text-[var(--text-primary)] pb-8">
+                            Modify Selection
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        // Use getReferralHTML from previous code but ensure it's defined
+        function getReferralHTML() {
+            return `
+                 <div class="animate-fade-in pt-24 px-6 space-y-8">
+                    <div class="text-center space-y-2">
+                        <span class="px-3 py-1 rounded-full border border-gold/30 text-gold text-[10px] uppercase tracking-[0.2em]">The Circle</span>
+                        <h2 class="text-3xl font-serif text-[var(--text-primary)] pt-4">Elite Invitations</h2>
+                    </div>
+
+                    <div class="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-[var(--bg-secondary)] to-[var(--bg-primary)] border border-[var(--border-color)] p-8 text-center group">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-30"></div>
+                        <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gold to-yellow-800 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(203,165,121,0.2)]">
+                            <i data-lucide="gem" class="w-8 h-8 text-black"></i>
+                        </div>
+                        <p class="text-[var(--text-secondary)] text-xs uppercase tracking-widest mb-3">Your Access Code</p>
+                        <h3 class="text-4xl font-serif text-[var(--text-primary)] mb-8 tracking-widest">CS-Royal</h3>
+                        <button onclick="alert('Invitation Link Copied!')" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                            <i data-lucide="share-2" class="w-4 h-4 text-black"></i>
+                            Share Invitation
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                       <div class="glass-panel p-6 rounded-3xl text-center">
+                          <div class="text-2xl font-serif text-[var(--text-primary)]">₹500</div>
+                          <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">You Get</div>
+                       </div>
+                       <div class="glass-panel p-6 rounded-3xl text-center">
+                          <div class="text-2xl font-serif text-[var(--text-primary)]">10%</div>
+                          <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">They Get</div>
+                       </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setBookingDate(date) { state.booking.date = date; renderContent('booking'); }
+        function setBookingTime(time) { state.booking.time = time; renderContent('booking'); }
+        function updateGuests(delta) {
+            const newVal = state.booking.guests + delta;
+            if(newVal >= 2 && newVal <= 10) {
+                state.booking.guests = newVal;
+                renderContent('booking');
+            }
+        }
+        function nextBookingStep() {
+            if(state.booking.date && state.booking.time) { state.booking.step = 2; renderContent('booking'); }
+        }
+        function setBookingStep(step) { state.booking.step = step; renderContent('booking'); }
+        function toggleAddon(id) {
+            if(state.booking.addons.includes(id)) { state.booking.addons = state.booking.addons.filter(a => a !== id); } 
+            else { state.booking.addons.push(id); }
+            renderContent('booking');
+        }
+        function calculateTotal() {
+            let base = parseInt(state.booking.package.price.replace(/[^\d]/g, ''));
+            let extraGuestCharge = 0;
+            if (state.booking.package.title.includes('Group') && state.booking.guests > 4) {
+                extraGuestCharge = (state.booking.guests - 4) * 200;
+            }
+            let addonsTotal = state.booking.addons.reduce((acc, curr) => {
+                const addon = ADDONS.find(a => a.id === curr);
+                return acc + (addon ? addon.price : 0);
+            }, 0);
+            return base + extraGuestCharge + addonsTotal;
+        }
+        function confirmBooking() {
+            const addonNames = state.booking.addons.map(id => ADDONS.find(a => a.id === id).name).join(', ');
+            const total = calculateTotal();
+            const message = `*LUXURY BOOKING REQUEST*\nExperience: ${state.booking.package.title}\nDate: ${state.booking.date}\nTime: ${state.booking.time}\nGuests: ${state.booking.guests}\nAdd-ons: ${addonNames || 'None'}\nValue: ₹${total}`;
+            const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+        function selectPackageAndBook(pkgId) {
+            const pkg = PACKAGES.find(p => p.id === pkgId);
+            navigateTo('booking', pkg);
+        }
+        function bindBookingListeners() { lucide.createIcons(); }
+
     </script>
 </body>
 </html>
+
+
+
 
